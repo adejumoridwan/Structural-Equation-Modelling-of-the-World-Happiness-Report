@@ -1,0 +1,64 @@
+---
+title: "Structural Equation Modelling of the World Happiness Report"
+author: "Adejumo Ridwan Suleiman"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+# Packages
+```{r}
+library(tidyverse)
+library(lavaan)
+library(lavaanPlot)
+```
+
+# Data
+```{r}
+# Load Data
+whr <- read.csv("whr.csv")
+
+# Rename variables
+whr <- whr |> 
+  rename(
+    LL = Life.Ladder,
+    GDP = Log.GDP.per.capita,
+    SS = Social.support,
+    LE = Healthy.life.expectancy.at.birth,
+    FLC = Freedom.to.make.life.choices,
+    GEN = Generosity,
+    PC = Perceptions.of.corruption,
+    PAF = Positive.affect,
+    NAF = Negative.affect,
+  )
+```
+
+# Measurement Model
+
+```{r}
+# model specification
+mea_model <- "HPP =~ SS + LE + FLC + PAF + GDP + LL + GEN + PC + NAF"
+
+#model fit
+mea_model_fit <- sem(mea_model, data = whr)
+
+#model summary
+summary(mea_model_fit, standardized = TRUE, fit.measures = TRUE)
+```
+
+
+# SEM Model
+```{r}
+#model specification
+whr_sem_model <- "HPP =~ SS + LE + FLC + PAF + GDP + LL
+              LE ~~ GDP + FLC
+              FLC ~~ PAF + GDP
+              SS ~~ LL
+              "
+#model fit
+sem_model_fit <- sem(whr_sem_model, data = whr)
+
+#model summary
+summary(sem_model_fit, standardized = TRUE, fit.measures = TRUE)
+
+```
+
