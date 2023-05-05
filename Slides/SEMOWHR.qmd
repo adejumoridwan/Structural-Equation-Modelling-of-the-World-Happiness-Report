@@ -1,0 +1,45 @@
+---
+title: "Structural Equation Modelling of the World Happiness Report"
+author: "Adejumo Ridwan Suleiman"
+format: 
+  revealjs:
+    transition: slide
+    scrollable: true
+    incremental: true
+    theme: simple
+    preview-links: true
+    chalkboard: 
+      boardmarker-width: 5
+from: markdown+emoji
+execute:
+  echo: true
+editor: visual
+title-slide-attributes: 
+  data-background-size: 10%
+  data-background-position: 2% 2%
+---
+
+## About the Presenter
+
+-   Data Scientist at Business Data Laboratory
+-   Statistician at Federal Teaching Hospital Gombe
+
+![](images/ridwan.jpeg){.absolute bottom="40" left="700" height="400" width="400"}
+
+## Contents of Today's Presentation
+- About the World Happiness Report
+- Variables in the Combined World Happines Report
+- Recap on Last Webinar on SEM
+- Analysis of the World Happiness Report using SEM
+
+## About the World Happiness Report
+- Publication of the Sustainable Development Solutions Network
+- It's a review of the state of happiness around the world
+- It consists of observed data on 
+  - GDP per capita 
+  - Social support
+  - Healthy life expectancy
+  - Freedom
+  - Generosity
+  - Corruption
+- [World Happiness Report](https://worldhappiness.report/)
