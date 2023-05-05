@@ -42,4 +42,7 @@ title-slide-attributes:
   - Freedom
   - Generosity
   - Corruption
-- [World Happiness Report](https://worldhappiness.report/)
+
+## About the World Happiness Report
+![](images/dashboard.png)
+- [World Happiness Report Dashboard](https://worldhappiness.report/data/)
