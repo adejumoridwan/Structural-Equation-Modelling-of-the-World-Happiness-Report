@@ -62,3 +62,13 @@ summary(sem_model_fit, standardized = TRUE, fit.measures = TRUE)
 
 ```
 
+```{r}
+library(semPlot)
+semPaths(
+  sem_model_fit,
+  whatLabels = "std",
+  what = "std",
+  edge.color = "black"
+)
+```
+
