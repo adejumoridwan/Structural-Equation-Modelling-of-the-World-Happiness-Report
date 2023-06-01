@@ -27,22 +27,27 @@ title-slide-attributes:
 ![](images/ridwan.jpeg){.absolute bottom="40" left="700" height="400" width="400"}
 
 ## Contents of Today's Presentation
-- About the World Happiness Report
-- Variables in the Combined World Happines Report
-- Recap on Last Webinar on SEM
-- Analysis of the World Happiness Report using SEM
+
+-   About the World Happiness Report
+-   Variables in the Combined World Happines Report
+-   Recap on Last Webinar on SEM
+-   Analysis of the World Happiness Report using SEM
 
 ## About the World Happiness Report
-- Publication of the Sustainable Development Solutions Network
-- It's a review of the state of happiness around the world
-- It consists of observed data on 
-  - GDP per capita 
-  - Social support
-  - Healthy life expectancy
-  - Freedom
-  - Generosity
-  - Corruption
+
+-   Publication of the Sustainable Development Solutions Network
+-   It's a review of the state of happiness around the world
+-   It consists of observed data on
+    -   GDP per capita
+    -   Social support
+    -   Healthy life expectancy
+    -   Freedom
+    -   Generosity
+    -   Corruption
 
 ## About the World Happiness Report
-![](images/dashboard.png)
-- [World Happiness Report Dashboard](https://worldhappiness.report/data/)
+
+![](images/dashboard.png) - [World Happiness Report Dashboard](https://worldhappiness.report/data/)
+
+## Recap on Structural Equation Modleling
+

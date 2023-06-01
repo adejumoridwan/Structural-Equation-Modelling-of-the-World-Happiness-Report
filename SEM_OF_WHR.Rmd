@@ -1,18 +1,19 @@
 ---
 title: "Structural Equation Modelling of the World Happiness Report"
 author: "Adejumo Ridwan Suleiman"
-date: "`r Sys.Date()`"
-output: html_document
+format: html
 ---
 
-# Packages
+# Libraries
 ```{r}
 library(tidyverse)
 library(lavaan)
-library(lavaanPlot)
+library(readxl)
+library(psych)
 ```
 
-# Data
+
+# Data Loading and Cleaning
 ```{r}
 # Load Data
 whr <- read.csv("whr.csv")
@@ -29,46 +30,105 @@ whr <- whr |>
     PC = Perceptions.of.corruption,
     PAF = Positive.affect,
     NAF = Negative.affect,
+  ) |> 
+  select(
+    -c(1:2)
   )
-```
 
-# Measurement Model
-
-```{r}
-# model specification
-mea_model <- "HPP =~ SS + LE + FLC + PAF + GDP + LL + GEN + PC + NAF"
-
-#model fit
-mea_model_fit <- sem(mea_model, data = whr)
-
-#model summary
-summary(mea_model_fit, standardized = TRUE, fit.measures = TRUE)
+skimr::skim(whr)
 ```
 
 
-# SEM Model
-```{r}
-#model specification
-whr_sem_model <- "HPP =~ SS + LE + FLC + PAF + GDP + LL
-              LE ~~ GDP + FLC
-              FLC ~~ PAF + GDP
-              SS ~~ LL
-              "
-#model fit
-sem_model_fit <- sem(whr_sem_model, data = whr)
+# Exploratory Data Analysis
 
-#model summary
-summary(sem_model_fit, standardized = TRUE, fit.measures = TRUE)
+# Factor Analysis
+```{r}
+# Establish two sets of indices to split the dataset
+N <- nrow(whr)
+indices <- seq(1, N)
+indices_EFA <- sample(indices, floor((.5*N)))
+indices_CFA <- indices[!(indices %in% indices_EFA)]
+
+# Use indices to split dataset into half
+whr_EFA <- whr[indices_EFA, ]
+whr_CFA <- whr[indices_CFA, ]
+
+# Use the indices  to create a grouping variable
+group_var <- vector("numeric", nrow(whr))
+group_var[indices_EFA] <- 1
+group_var[indices_CFA] <- 2
+
+# Bind that grouping variable onto the gcbs dataset
+whr_grouped <- cbind(whr, group_var)
 
 ```
 
 ```{r}
-library(semPlot)
-semPaths(
-  sem_model_fit,
-  whatLabels = "std",
-  what = "std",
-  edge.color = "black"
-)
+# Calculate the correlation matrix 
+whr_EFA_cor <- cor(whr_EFA, use = "pairwise.complete.obs")
+
+# Then use that correlation matrix to calculate eigenvalues
+eigenvals <- eigen(whr_EFA_cor)
+
+# Look at the eigenvalues returned
+eigenvals$values
+```
+
+```{r}
+# scree plot
+scree(whr_EFA_cor, factors = FALSE)
+```
+
+```{r}
+# Run the EFA with three factors
+EFA_model <- fa(whr_EFA, nfactors=3)
+
+# View items' factor loadings
+EFA_model$loadings
+```
+
+
+```{r}
+summary(EFA_model)
+```
+
+# Structural Equation Modelling 
+
+## Measurement Model
+```{r}
+mea_model_syntax = "
+F1 =~ LL + GDP + LE
+F2 =~ FLC + GEN + PAF + NAF
+F3 =~ SS + PC 
+HAPP =~ F1 + F2 + F3
+"
+mea_model <- sem(mea_model_syntax, data = whr_CFA)
+
+summary(mea_model, fit.measures = TRUE, standardized = TRUE)
+
+```
+
+
+```{r}
+modificationindices(str_model, sort. = TRUE)
+```
+## Structural Model
+```{r}
+str_model_syntax = "
+F1 =~ LL + GDP + LE + FLC
+F2 =~ FLC + GEN + PAF + NAF + LL
+F3 =~ SS + PC + LE
+HAPP =~ F1 + F2 + F3
+NAF	~~	SS
+FLC	~~	PC
+LE	~~	FLC
+GEN	~~	PC
+GDP	~~	FLC
+LE	~~	NAF
+FLC	~~	GEN
+"
+str_model <- sem(str_model_syntax, data = whr_CFA)
+
+summary(str_model, fit.measures = TRUE, standardized = TRUE)
 ```
 
