@@ -115,10 +115,10 @@ modificationindices(str_model, sort. = TRUE)
 ## Structural Model
 ```{r}
 str_model_syntax = "
-F1 =~ LL + GDP + LE + FLC
-F2 =~ FLC + GEN + PAF + NAF + LL
+F1 =~ LL + GDP + LE + FLC + GEN
+F2 =~ FLC + GEN + PAF + NAF + LL + PC
 F3 =~ SS + PC + LE
-HAPP =~ F1 + F2 + F3
+HAPP =~ F1 + F2 + F3 + NAF + GEN
 NAF	~~	SS
 FLC	~~	PC
 LE	~~	FLC
