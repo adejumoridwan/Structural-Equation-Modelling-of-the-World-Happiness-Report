@@ -32,7 +32,7 @@ whr <- whr |>
     NAF = Negative.affect,
   ) |> 
   select(
-    -c(1:2)
+    -c(1:3,10,11)
   )
 
 skimr::skim(whr)
@@ -81,7 +81,7 @@ scree(whr_EFA_cor, factors = FALSE)
 
 ```{r}
 # Run the EFA with three factors
-EFA_model <- fa(whr_EFA, nfactors=3)
+EFA_model <- fa(whr_EFA, nfactors=2)
 
 # View items' factor loadings
 EFA_model$loadings
@@ -97,10 +97,8 @@ summary(EFA_model)
 ## Measurement Model
 ```{r}
 mea_model_syntax = "
-F1 =~ LL + GDP + LE
-F2 =~ FLC + GEN + PAF + NAF
-F3 =~ SS + PC 
-HAPP =~ F1 + F2 + F3
+F1 =~ GDP + SS + LE
+F2 =~ FLC + GEN + PC
 "
 mea_model <- sem(mea_model_syntax, data = whr_CFA)
 
@@ -109,26 +107,22 @@ summary(mea_model, fit.measures = TRUE, standardized = TRUE)
 ```
 
 
-```{r}
-modificationindices(str_model, sort. = TRUE)
-```
 ## Structural Model
 ```{r}
+set.seed(1999)
 str_model_syntax = "
-F1 =~ LL + GDP + LE + FLC + GEN
-F2 =~ FLC + GEN + PAF + NAF + LL + PC
-F3 =~ SS + PC + LE
-HAPP =~ F1 + F2 + F3 + NAF + GEN
-NAF	~~	SS
-FLC	~~	PC
+F1 =~ GDP + SS + LE + GEN
+F2 =~ FLC + GEN + PC
+SS	~~	FLC
 LE	~~	FLC
-GEN	~~	PC
-GDP	~~	FLC
-LE	~~	NAF
-FLC	~~	GEN
+SS	~~	GEN
 "
 str_model <- sem(str_model_syntax, data = whr_CFA)
 
 summary(str_model, fit.measures = TRUE, standardized = TRUE)
+```
+```{r}
+set.seed(1999)
+modificationindices(str_model, sort. = TRUE)
 ```
 
